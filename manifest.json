@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Pixel Inspector",
+  "description": "Overlay page with selected image & make grid system, compare your page with design to check pixel perfectness",
+  "version": "1.0",
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "action": {
+    "default_popup" : "popup/popup.html"
+  },
+  "content_scripts": [ { "matches": ["http://*/*"], "js":["content.js"] } ],
+  "permissions": ["scripting", "activeTab", "tabs"]
+  
+} 
