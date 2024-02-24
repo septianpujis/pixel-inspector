@@ -2,16 +2,51 @@
 <html lang="en">
   <head>
     <title>Pixel Inspector</title>
-    <script src="jquery.js"></script>
-    <script src="popup.js"></script>
   </head>
   <body>
+    <style>
+      .highlight {
+        color: red;
+      }
+      button {
+        color: blue;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+      }
+      button:hover {
+        border-bottom: 1px solid black; 
+      }
+    </style>
     <h1>Pixel Inspector</h1>
-    <div class="switch">
-      <input type="checkbox" id="switch" />
-      <label for="switch">On / Off</label>
+    <button id="toggleButton">Enable Image</button>
+    <div>
+      <button class="tab-switch" data-target="tab-a">Tab A</button>
+      <button class="tab-switch" data-target="tab-b">Tab B</button>
+
+      <div id="tab-a" class="tab-content">
+        <label>X: <input type="text" /></label>
+        <label>Y: <input type="text" /></label>
+        <label>Opacity: <input type="number" />
+          <button>-</button>
+          <button>+</button>
+        </label>
+        <label><input type="checkbox" /> Lock</label>
+      </div>
+
+      <div id="tab-b" class="tab-content">
+        <label>Total: <input type="text" /></label>
+        <label>Color: <input type="text" /></label>
+        <label>Opacity: <input type="number" />
+          <button>-</button>
+          <button>+</button>
+        </label>
+      </div>
     </div>
-    <button id="imageTab">Image Overlay</button>
-    <button id="gridTab">Grid Overlay</button>
+
+    <script src="popup.js"></script>
   </body>
+</html>
+</html>
+
 </html>
