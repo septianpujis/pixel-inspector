@@ -20,24 +20,19 @@
       <div class="pi-tab-wrapper">
         <div id="tab-image" class="pi-tab-content">
           <div class="pi-profile-wrapper">
-            <div class="pi-image-profile active">
-              <img src="https://placehold.co/80x80" alt="Profile 1" />
-            </div>
-            <div class="pi-image-profile">
-              <img src="https://placehold.co/80x80" alt="Profile 1" />
-            </div>
-            <button class="pi-add-profile">+ Upload</button>
+            <button class="pi-add-profile" id="imageAddBtn">+ Upload</button>
           </div>
 
           <div class="pi-form-wrapper">
-            <label>X: <input type="number" /></label>
-            <label>Y: <input type="number" /></label>
+            <label>X: <input type="number" id="imageXPosition" /></label>
+            <label>Y: <input type="number" id="imageYPosition" /></label>
             <label
-              >Opacity: <input type="range" min="0" max="1" step="0.1"
+              >Opacity:
+              <input type="range" min="0" max="1" step="0.1" id="OmageOpacity"
             /></label>
-            <label>Scale: <input type="number" /></label>
-            <label><input type="checkbox" /> Lock</label>
-            <label><input type="checkbox" /> Visible</label>
+            <label>Scale: <input type="number" id="imageScale" /></label>
+            <label><input type="checkbox" id="imageIsLock" /> Lock</label>
+            <label><input type="checkbox" id="imageIsVisible" /> Visible</label>
           </div>
         </div>
 

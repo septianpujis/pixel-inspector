@@ -16,7 +16,9 @@ h1 {
   justify-content: space-between;
 }
 .pi-body {
-  margin-top: 24px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid lightblue;
 }
 
 .pi-power-button {
@@ -67,6 +69,7 @@ h1 {
   border: 2px solid lightgray;
   overflow: hidden;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 #tab-image .pi-add-profile {
@@ -76,6 +79,7 @@ h1 {
   overflow: hidden;
   flex-shrink: 0;
   border: 2px dashed blue;
+  cursor: pointer;
 }
 
 #tab-image .pi-image-profile.active {
@@ -84,9 +88,9 @@ h1 {
 
 #tab-image .pi-image-profile img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
 }
 #tab-image .pi-form-wrapper {
   display: flex;
