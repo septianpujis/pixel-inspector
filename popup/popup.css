@@ -1,0 +1,105 @@
+body {
+  width: 300px;
+  overflow: auto;
+  border: 1px solid black;
+  margin: 0;
+  padding: 8px;
+  font-family: Helvetica;
+}
+h1 {
+  margin: 0;
+}
+
+.pi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pi-body {
+  margin-top: 24px;
+}
+
+.pi-power-button {
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: blue;
+}
+
+.pi-power-button:hover {
+  background-color: #00008b;
+}
+.pi-power-button:active {
+  background-color: #00004d;
+}
+
+.pi-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.pi-tab-switch {
+  display: inline-block;
+  padding: 8px 16px;
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  background-color: white;
+  font-size: 16px;
+}
+.pi-tab-switch.active {
+  border-bottom: 2px solid blue;
+  color: blue;
+}
+
+#tab-image .pi-profile-wrapper {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+#tab-image .pi-image-profile {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid lightgray;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+#tab-image .pi-add-profile {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px dashed blue;
+}
+
+#tab-image .pi-image-profile.active {
+  border: 2px solid blue;
+}
+
+#tab-image .pi-image-profile img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+#tab-image .pi-form-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+label {
+  width: 50%;
+}
+
+#tab-grid .pi-profile-wrapper {
+  overflow: auto;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}

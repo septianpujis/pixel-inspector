@@ -2,51 +2,65 @@
 <html lang="en">
   <head>
     <title>Pixel Inspector</title>
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <style>
-      .highlight {
-        color: red;
-      }
-      button {
-        color: blue;
-        border: 0;
-        background: transparent;
-        cursor: pointer;
-      }
-      button:hover {
-        border-bottom: 1px solid black; 
-      }
-    </style>
-    <h1>Pixel Inspector</h1>
-    <button id="toggleButton">Enable Image</button>
-    <div>
-      <button class="tab-switch" data-target="tab-a">Tab A</button>
-      <button class="tab-switch" data-target="tab-b">Tab B</button>
-
-      <div id="tab-a" class="tab-content">
-        <label>X: <input type="text" /></label>
-        <label>Y: <input type="text" /></label>
-        <label>Opacity: <input type="number" />
-          <button>-</button>
-          <button>+</button>
-        </label>
-        <label><input type="checkbox" /> Lock</label>
+    <div class="pi-header">
+      <h1>Pixel Inspector</h1>
+      <button class="pi-power-button" id="toggleButton"></button>
+    </div>
+    <div class="pi-body">
+      <div class="pi-tabs">
+        <button class="pi-tab-switch active" data-target="tab-image">
+          Image
+        </button>
+        <button class="pi-tab-switch" data-target="tab-grid">Grid</button>
       </div>
 
-      <div id="tab-b" class="tab-content">
-        <label>Total: <input type="text" /></label>
-        <label>Color: <input type="text" /></label>
-        <label>Opacity: <input type="number" />
-          <button>-</button>
-          <button>+</button>
-        </label>
+      <div class="pi-tab-wrapper">
+        <div id="tab-image" class="pi-tab-content">
+          <div class="pi-profile-wrapper">
+            <div class="pi-image-profile active">
+              <img src="https://placehold.co/80x80" alt="Profile 1" />
+            </div>
+            <div class="pi-image-profile">
+              <img src="https://placehold.co/80x80" alt="Profile 1" />
+            </div>
+            <button class="pi-add-profile">+ Upload</button>
+          </div>
+
+          <div class="pi-form-wrapper">
+            <label>X: <input type="number" /></label>
+            <label>Y: <input type="number" /></label>
+            <label
+              >Opacity: <input type="range" min="0" max="1" step="0.1"
+            /></label>
+            <label>Scale: <input type="number" /></label>
+            <label><input type="checkbox" /> Lock</label>
+            <label><input type="checkbox" /> Visible</label>
+          </div>
+        </div>
+
+        <div id="tab-grid" class="pi-tab-content">
+          <div class="pi-profile-wrapper">
+            <div class="pi-grid-profile active">width-column-gutter-color</div>
+            <div class="pi-grid-profile">width-column-gutter-color</div>
+            <div class="pi-add-profile">Add new grid</div>
+          </div>
+
+          <div class="pi-form-wrapper">
+            <label>Width: <input type="number" /></label>
+            <label>Column: <input type="number" /></label>
+            <label>Gutter: <input type="number" /></label>
+            <label
+              >Opacity: <input type="range" min="0" max="1" step="0.1"
+            /></label>
+            <label>Color: <input type="color" /></label>
+          </div>
+        </div>
       </div>
     </div>
 
     <script src="popup.js"></script>
   </body>
-</html>
-</html>
-
 </html>
