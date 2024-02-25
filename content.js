@@ -37,11 +37,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       "pixelInspectorImageOverlay"
     );
 
-    const existingImages = pixelInspectorImageOverlay.querySelectorAll("img");
-    for (let i = 0; i < existingImages.length; i++) {
-      existingImages[i].remove();
+    if (pixelInspectorImageOverlay) {
+      const existingImages = pixelInspectorImageOverlay.querySelectorAll("img");
+      for (let i = 0; i < existingImages.length; i++) {
+        existingImages[i].remove();
+      }
+      pixelInspectorImageOverlay.appendChild(img);
     }
-
-    pixelInspectorImageOverlay.appendChild(img);
   }
 });

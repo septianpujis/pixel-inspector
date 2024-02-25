@@ -21,7 +21,7 @@ chrome.storage.sync.get("enabled", async (data) => {
     action: "toogleExtension",
     enabled: isExtensionEnabled,
   });
-  isExtensionEnabled && updateImageProfilePopup();
+  updateImageProfilePopup();
 });
 
 chrome.storage.sync.get("selectedImageProfile", (data) => {
@@ -160,7 +160,7 @@ imageXPosition.addEventListener("input", () => {
     }
   });
 
-  chrome.storage.sync.set({ imageProfile });
+  // chrome.storage.sync.set({ imageProfile });
   selectImageProfil(selectedImageProfileId);
 });
 
@@ -171,6 +171,6 @@ imageYPosition.addEventListener("input", () => {
     }
   });
 
-  chrome.storage.sync.set({ imageProfile });
+  // chrome.storage.sync.set({ imageProfile });
   selectImageProfil(selectedImageProfileId);
 });
