@@ -1,10 +1,13 @@
-Chrome Extension to overlay image & create design grid system to matches your page with given design
+# Chrome Extension to overlay image & create design grid system to matches your page with given design
 
-TODO :
--image overlay
--add draggable handlers to image profile
--input more experience friendly
+## TODO :
 
--grid system
--make profile
--make grid with div looped, absolute positioned with top,left calculated from profile size
+- image overlay
+- upload image configure
+- input to be more experience friendly
+- add draggable handlers to image profile
+
+- grid system
+  - restyle grid profile list & button add
+  - props input config & styling
+  - grid profile naming to be customizable

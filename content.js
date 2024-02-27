@@ -8,6 +8,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     const pixelInspectorGridOverlay = document.createElement("div");
     pixelInspectorGridOverlay.setAttribute("id", "pixelInspectorGridOverlay");
+    pixelInspectorGridOverlay.style.position = "absolute";
+    pixelInspectorGridOverlay.style.left = "50%";
+    pixelInspectorGridOverlay.style.top = "0px";
+    pixelInspectorGridOverlay.style.transform = "translateX(-50%)";
+    pixelInspectorGridOverlay.style.display = "flex";
+    pixelInspectorGridOverlay.style.height = "100%";
 
     pixelInspectorParent.appendChild(pixelInspectorImageOverlay);
     pixelInspectorParent.appendChild(pixelInspectorGridOverlay);
@@ -43,6 +49,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         existingImages[i].remove();
       }
       pixelInspectorImageOverlay.appendChild(img);
+    }
+  }
+
+  if (message.action === "updateSelectedProfileGrid") {
+    const gridBar = document.createElement("div");
+    gridBar.style.background = message.gridProfile.color;
+    gridBar.style.height = "100%";
+    gridBar.style.flex = "1 1 100%";
+
+    const pixelInspectorGridOverlay = document.getElementById(
+      "pixelInspectorGridOverlay"
+    );
+
+    if (pixelInspectorGridOverlay) {
+      pixelInspectorGridOverlay.style.width = message.gridProfile.width + "px";
+      pixelInspectorGridOverlay.style.gap = message.gridProfile.gap + "px";
+      pixelInspectorGridOverlay.style.opacity = message.gridProfile.opacity;
+
+      const existingGrids = pixelInspectorGridOverlay.querySelectorAll("div");
+      for (let i = 0; i < existingGrids.length; i++) {
+        existingGrids[i].remove();
+      }
+
+      for (let i = 0; i < Number(message.gridProfile.amount); i++) {
+        pixelInspectorGridOverlay.appendChild(gridBar.cloneNode(true));
+      }
     }
   }
 });

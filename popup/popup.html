@@ -38,24 +38,25 @@
 
         <div id="tab-grid" class="pi-tab-content">
           <div class="pi-profile-wrapper">
-            <div class="pi-grid-profile active">width-column-gutter-color</div>
-            <div class="pi-grid-profile">width-column-gutter-color</div>
-            <div class="pi-add-profile">Add new grid</div>
+            <button class="pi-add-profile" id="gridAddBtn">Add new grid</button>
           </div>
 
           <div class="pi-form-wrapper">
-            <label>Width: <input type="number" /></label>
-            <label>Column: <input type="number" /></label>
-            <label>Gutter: <input type="number" /></label>
+            <label>Width: <input type="number" id="gridWidth" /></label>
+            <label>Column: <input type="number" id="gridAmount" /></label>
+            <label>Gutter: <input type="number" id="gridGap" /></label>
             <label
-              >Opacity: <input type="range" min="0" max="1" step="0.1"
+              >Opacity:
+              <input type="range" min="0" max="1" step="0.1" id="gridOpacity"
             /></label>
-            <label>Color: <input type="color" /></label>
+            <label>Color: <input type="color" id="gridColor" /></label>
           </div>
         </div>
       </div>
     </div>
 
     <script src="popup.js"></script>
+    <script src="imageConfig.js"></script>
+    <script src="gridConfig.js"></script>
   </body>
 </html>
