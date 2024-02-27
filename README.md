@@ -3,9 +3,10 @@
 ## TODO :
 
 - image overlay
-- upload image configure
-- input to be more experience friendly
-- add draggable handlers to image profile
+
+  - upload image configure
+  - input to be more experience friendly
+  - add draggable handlers to image profile
 
 - grid system
   - restyle grid profile list & button add
