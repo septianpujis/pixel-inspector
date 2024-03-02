@@ -24,15 +24,69 @@
           </div>
 
           <div class="pi-form-wrapper">
-            <label>X: <input type="number" id="imageXPosition" /></label>
-            <label>Y: <input type="number" id="imageYPosition" /></label>
-            <label
-              >Opacity:
-              <input type="range" min="0" max="1" step="0.1" id="OmageOpacity"
-            /></label>
-            <label>Scale: <input type="number" id="imageScale" /></label>
-            <label><input type="checkbox" id="imageIsLock" /> Lock</label>
-            <label><input type="checkbox" id="imageIsVisible" /> Visible</label>
+            <div
+              id="game-container"
+              style="position: relative; width: 120px; height: 120px"
+            >
+              <div id="controller">
+                <div id="touch-area"></div>
+                <div id="up-arrow" class="arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                      fill="blue"
+                      d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                    />
+                  </svg>
+                </div>
+                <div id="down-arrow" class="arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                      fill="blue"
+                      d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                    />
+                  </svg>
+                </div>
+                <div id="left-arrow" class="arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                      fill="blue"
+                      d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                    />
+                  </svg>
+                </div>
+                <div id="right-arrow" class="arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                      fill="blue"
+                      d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="pi-image-form">
+              <div class="pi-image-position-wrapper">
+                <label>X: <input type="number" id="imageXPosition" /></label>
+                <label>Y: <input type="number" id="imageYPosition" /></label>
+              </div>
+              <label
+                >Opacity:
+                <input
+                  class="pi-range"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  id="imageOpacity"
+              /></label>
+              <!-- <label>Scale: <input type="number" id="imageScale" /></label> -->
+              <div class="pi-image-check-wrapper">
+                <label><input type="checkbox" id="imageIsLock" /> Lock</label>
+                <label
+                  ><input type="checkbox" id="imageIsVisible" /> Visible</label
+                >
+              </div>
+            </div>
           </div>
         </div>
 
@@ -42,14 +96,24 @@
           </div>
 
           <div class="pi-form-wrapper">
-            <label>Width: <input type="number" id="gridWidth" /></label>
-            <label>Column: <input type="number" id="gridAmount" /></label>
-            <label>Gutter: <input type="number" id="gridGap" /></label>
-            <label
-              >Opacity:
-              <input type="range" min="0" max="1" step="0.1" id="gridOpacity"
-            /></label>
-            <label>Color: <input type="color" id="gridColor" /></label>
+            <div class="pi-grid-config-wrapper">
+              <label>Width: <input type="number" id="gridWidth" /></label>
+              <label>Column: <input type="number" id="gridAmount" /></label>
+              <label>Gutter: <input type="number" id="gridGap" /></label>
+            </div>
+            <div class="pi-grid-visual-wrapper">
+              <label
+                >Opacity:
+                <input
+                  class="pi-range"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  id="gridOpacity"
+              /></label>
+              <label>Color: <input type="color" id="gridColor" /></label>
+            </div>
           </div>
         </div>
       </div>
@@ -58,5 +122,6 @@
     <script src="popup.js"></script>
     <script src="imageConfig.js"></script>
     <script src="gridConfig.js"></script>
+    <script src="inputDrag.js"></script>
   </body>
 </html>

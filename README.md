@@ -5,10 +5,9 @@
 - image overlay
 
   - upload image configure
-  - input to be more experience friendly
-  - add draggable handlers to image profile
+  - image overlay to be draggable & lockable
+  - problem on input drag (storage not updated)
 
 - grid system
-  - restyle grid profile list & button add
-  - props input config & styling
   - grid profile naming to be customizable
+  - input form functionality

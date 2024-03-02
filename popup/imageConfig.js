@@ -1,16 +1,18 @@
 const imageAddBtn = document.getElementById("imageAddBtn");
 const imageXPosition = document.getElementById("imageXPosition");
 const imageYPosition = document.getElementById("imageYPosition");
+const imageIsVisible = document.getElementById("imageIsVisible");
+const imageOpacity = document.getElementById("imageOpacity");
 
 var imageProfiles = [];
 var selectedImageProfileId = 0;
 
-chrome.storage.sync.get("selectedImageProfile", (data) => {
+chrome.storage.local.get("selectedImageProfile", (data) => {
   selectedImageProfileId = data.selectedImageProfile || 0;
   selectImageProfil(selectedImageProfileId);
 });
 
-chrome.storage.sync.get("imageProfiles", (data) => {
+chrome.storage.local.get("imageProfiles", (data) => {
   imageProfiles = data.imageProfiles || [];
   updateImageProfilePopup();
 });
@@ -29,12 +31,24 @@ function updateImageProfilePopup() {
     imageDiv.classList.add("pi-image-profile");
     profile.active && imageDiv.classList.add("active");
     imageDiv.id = profile.id;
-    imageDiv.addEventListener("click", () => {
-      selectImageProfil(profile.id);
+    // Added close icon
+    const closeIcon = document.createElement("div");
+    closeIcon.classList.add("close-icon");
+    closeIcon.innerHTML = "&times;";
+
+    // Added click handler to delete profile
+    closeIcon.addEventListener("click", function () {
+      deleteImageProfile(profile.id);
     });
+
+    imageDiv.appendChild(closeIcon);
 
     const img = document.createElement("img");
     img.src = profile.imageSrc;
+
+    img.addEventListener("click", function () {
+      selectImageProfil(profile.id);
+    });
 
     imageDiv.appendChild(img);
 
@@ -44,6 +58,13 @@ function updateImageProfilePopup() {
   });
 }
 
+function deleteImageProfile(id) {
+  imageProfiles = imageProfiles.filter((profile) => profile.id !== id);
+  chrome.storage.local.set({ imageProfiles });
+  updateImageProfilePopup();
+  selectImageProfil(null);
+}
+
 imageAddBtn.addEventListener("click", async () => {
   const newImage = {
     id: Date.now(),
@@ -51,6 +72,7 @@ imageAddBtn.addEventListener("click", async () => {
     top: "0",
     left: "0",
     opacity: 1,
+    isVisible: true,
     active: true,
   };
 
@@ -59,39 +81,55 @@ imageAddBtn.addEventListener("click", async () => {
   });
 
   imageProfiles.push(newImage);
-  chrome.storage.sync.set({ imageProfiles: imageProfiles }, () => {});
+  chrome.storage.local.set({ imageProfiles: imageProfiles }, () => {});
   selectImageProfil(newImage.id);
 });
 
 async function selectImageProfil(id) {
-  selectedImageProfileId = id;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
+  selectedImageProfileId = id;
+  chrome.storage.local.set({ selectedImageProfile: id }, () => {});
+
   imageProfiles.forEach((profile) => {
-    profile.active = profile.id === id;
+    profile.active = profile.id === selectedImageProfileId;
   });
 
-  chrome.storage.sync.set({ selectedImageProfile: id }, () => {});
   const selectedImage = imageProfiles.filter((img) => img.id == id)[0];
 
-  await chrome.tabs.sendMessage(tab.id, {
-    action: "updateSelectedProfileImages",
-    imageProfile: selectedImage,
-  });
-  imageXPosition.value = Number(selectedImage.left);
-  imageYPosition.value = Number(selectedImage.top);
+  if (selectedImage) {
+    imageIsVisible.checked = selectedImage.isVisible;
+    imageOpacity.value = selectedImage.opacity;
+    imageXPosition.value = Number(selectedImage.left);
+    imageYPosition.value = Number(selectedImage.top);
+
+    await chrome.tabs.sendMessage(tab.id, {
+      action: "updateSelectedProfileImages",
+      imageProfile: selectedImage,
+    });
+  } else {
+    await chrome.tabs.sendMessage(tab.id, {
+      action: "updateSelectedProfileImages",
+      imageProfile: null,
+    });
+  }
+
   updateImageProfilePopup();
 }
 
+function updateImageValuebyId(id) {
+  chrome.storage.local.set({ imageProfiles });
+  selectImageProfil(id);
+}
+
 imageXPosition.addEventListener("input", () => {
+  console.log(imageXPosition.value);
   imageProfiles.forEach((profile) => {
     if (profile.id === selectedImageProfileId) {
       profile.left = imageXPosition.value;
     }
   });
-
-  // chrome.storage.sync.set({ imageProfile });
-  selectImageProfil(selectedImageProfileId);
+  updateImageValuebyId(selectedImageProfileId);
 });
 
 imageYPosition.addEventListener("input", () => {
@@ -100,7 +138,23 @@ imageYPosition.addEventListener("input", () => {
       profile.top = imageYPosition.value;
     }
   });
+  updateImageValuebyId(selectedImageProfileId);
+});
 
-  // chrome.storage.sync.set({ imageProfile });
-  selectImageProfil(selectedImageProfileId);
+imageIsVisible.addEventListener("change", () => {
+  imageProfiles.forEach((profile) => {
+    if (profile.id === selectedImageProfileId) {
+      profile.isVisible = imageIsVisible.checked;
+    }
+  });
+  updateImageValuebyId(selectedImageProfileId);
+});
+
+imageOpacity.addEventListener("input", () => {
+  imageProfiles.forEach((profile) => {
+    if (profile.id === selectedImageProfileId) {
+      profile.opacity = imageOpacity.value;
+    }
+  });
+  updateImageValuebyId(selectedImageProfileId);
 });

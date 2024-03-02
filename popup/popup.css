@@ -1,3 +1,9 @@
+:root {
+  --object-bg: #e1e1ff;
+  --object-primary: blue;
+  --object-secondary: #778efd;
+}
+
 body {
   width: 300px;
   overflow: auto;
@@ -6,8 +12,93 @@ body {
   padding: 8px;
   font-family: Helvetica;
 }
-h1 {
+h1,
+p {
   margin: 0;
+}
+input[type="number"] {
+  border: none;
+  border-bottom: 2px solid var(--object-bg);
+  padding: 8px;
+  border-bottom-width: 2px;
+  transition: 0.3s ease all;
+  border-radius: 8px;
+  background-color: var(--object-bg);
+  width: 100%;
+  max-width: fit-content;
+
+  /* Hide spin buttons */
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+input[type="number"]:not(:placeholder-shown),
+input[type="number"]:focus {
+  outline: none;
+  border-color: blue;
+}
+/* Checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  border: 2px solid blue;
+  background-color: var(--object-bg);
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  transition: all 0.3s ease;
+  margin: 0;
+}
+
+input[type="checkbox"]:checked {
+  background-color: blue;
+  border-color: blue;
+}
+
+/* Slider track */
+input[type="range"] {
+  width: 100%;
+  max-width: fit-content;
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 12px;
+  background: var(--object-bg);
+  border-radius: 10px;
+  width: 100%;
+}
+
+/* Slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: blue;
+  border: 2px solid blue;
+  transition: all 0.3s ease;
+}
+input[type="range"]::-moz-range-thumb,
+input[type="range"]::-ms-thumb,
+input[type="range"]:focus::-webkit-slider-thumb {
+  background: blue;
+  border: 2px solid blue;
+}
+
+/* Remove default focus outline */
+input[type="range"]:focus {
+  outline: none;
 }
 
 .pi-header {
@@ -56,37 +147,56 @@ h1 {
 }
 
 #tab-image .pi-profile-wrapper {
-  overflow: auto;
+  overflow-x: auto;
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
+  border: 2px solid var(--object-primary);
+  border-radius: 4px;
+  padding: 8px;
 }
 #tab-image .pi-image-profile {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid lightgray;
-  overflow: hidden;
+  border: 2px solid var(--object-bg);
   flex-shrink: 0;
   cursor: pointer;
+  position: relative;
 }
 
 #tab-image .pi-add-profile {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  overflow: hidden;
   flex-shrink: 0;
   border: 2px dashed blue;
   cursor: pointer;
+  position: relative;
 }
 
 #tab-image .pi-image-profile.active {
-  border: 2px solid blue;
+  border-color: blue;
+}
+
+#tab-image .pi-image-profile .close-icon {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  display: none;
+  font-size: 24px;
+}
+#tab-image .pi-image-profile:hover .close-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #tab-image .pi-image-profile img {
+  border-radius: 50%;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -94,19 +204,172 @@ h1 {
 }
 #tab-image .pi-form-wrapper {
   display: flex;
+  align-items: center;
+  gap: 16px;
   flex-wrap: wrap;
+  position: relative;
+}
+.pi-image-form {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  gap: 12px;
+}
+.pi-image-position-wrapper,
+.pi-image-check-wrapper {
+  width: 100%;
+  display: flex;
+  gap: 8px;
 }
 
-label {
+.pi-image-position-wrapper label,
+.pi-image-check-wrapper label {
+  display: flex;
+  align-items: center;
   width: 50%;
+  gap: 8px;
+}
+.pi-range {
+  margin-top: 8px;
 }
 
 #tab-grid .pi-profile-wrapper {
   overflow: auto;
+  display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 16px;
   max-height: 100px;
-  border: 1px solid;
+  border: 2px solid var(--object-primary);
+  border-radius: 4px;
   padding: 8px;
+}
+
+#tab-grid .pi-grid-profile {
+  position: relative;
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 16px;
+  align-items: center;
+  border: 2px solid var(--object-bg);
+  cursor: pointer;
+}
+#tab-grid .pi-grid-profile.active {
+  border-color: blue;
+}
+
+#tab-grid .pi-grid-profile .close-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  width: 24px;
+  height: 24px;
+  display: none;
+  font-size: 24px;
+}
+#tab-grid .pi-grid-profile:hover .close-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tab-grid .pi-form-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.pi-grid-config-wrapper,
+.pi-grid-visual-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+}
+
+.pi-grid-config-wrapper label {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% / 3);
+}
+
+.pi-grid-visual-wrapper label {
+  display: flex;
+  flex-direction: column;
+}
+.pi-grid-visual-wrapper label:first-child {
+  width: calc(100% * 2 / 3);
+}
+.pi-grid-visual-wrapper label:last-child {
+  width: calc(100% * 1 / 3);
+}
+
+#controller {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: var(--object-bg);
+  overflow: hidden;
+}
+
+#touch-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: blue;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.arrow {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 2;
+}
+
+.arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+#up-arrow {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+#down-arrow {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(-90deg);
+}
+
+#left-arrow {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(-180deg);
+}
+
+#right-arrow {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }

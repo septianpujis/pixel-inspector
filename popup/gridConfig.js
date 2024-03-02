@@ -8,14 +8,14 @@ const gridOpacity = document.getElementById("gridOpacity");
 var gridProfiles = [];
 var selectedGridProfileId = 0;
 
-chrome.storage.sync.get("selectedGridProfile", (data) => {
-  selectedGridProfileId = data.selectedGridProfile || 0;
-  selectGridProfil(selectedGridProfileId);
-});
-
-chrome.storage.sync.get("gridProfiles", (data) => {
+chrome.storage.local.get("gridProfiles", (data) => {
   gridProfiles = data.gridProfiles || [];
   updateGridProfilePopup();
+});
+
+chrome.storage.local.get("selectedGridProfile", (data) => {
+  selectedGridProfileId = data.selectedGridProfile || 0;
+  selectGridProfil(selectedGridProfileId);
 });
 
 function updateGridProfilePopup() {
@@ -32,14 +32,32 @@ function updateGridProfilePopup() {
     gridDiv.classList.add("pi-grid-profile");
     profile.active && gridDiv.classList.add("active");
     gridDiv.id = profile.id;
-    gridDiv.addEventListener("click", () => {
+    gridDiv.addEventListener("click", function () {
       selectGridProfil(profile.id);
     });
 
-    const title = document.createElement("p");
-    title.innerText =
-      profile.width + " - " + profile.amount + " - " + profile.gap;
+    // Added close icon
+    const closeIcon = document.createElement("div");
+    closeIcon.classList.add("close-icon");
+    closeIcon.innerHTML = "&times;";
 
+    // Added click handler to delete profile
+    closeIcon.addEventListener("click", function () {
+      deleteGridProfile(profile.id);
+    });
+
+    gridDiv.appendChild(closeIcon);
+
+    // Added color square
+    const colorSquare = document.createElement("div");
+    colorSquare.style.width = "20px";
+    colorSquare.style.height = "20px";
+    colorSquare.style.backgroundColor = profile.color;
+
+    const title = document.createElement("p");
+    title.innerText = profile.name;
+
+    gridDiv.appendChild(colorSquare);
     gridDiv.appendChild(title);
 
     document
@@ -56,6 +74,7 @@ gridAddBtn.addEventListener("click", async () => {
     amount: "12",
     color: "#" + getRandomColor(),
     opacity: 0.4,
+    name: "1200px" + "12 column" + "24px gap",
     active: true,
   };
 
@@ -64,9 +83,17 @@ gridAddBtn.addEventListener("click", async () => {
   });
 
   gridProfiles.push(newGrid);
-  chrome.storage.sync.set({ gridProfiles: gridProfiles }, () => {});
+
+  chrome.storage.local.set({ gridProfiles: gridProfiles }, () => {});
   selectGridProfil(newGrid.id);
 });
+
+function deleteGridProfile(id) {
+  gridProfiles = gridProfiles.filter((profile) => profile.id !== id);
+  chrome.storage.local.set({ gridProfiles });
+  updateGridProfilePopup();
+  selectGridProfil(null);
+}
 
 async function selectGridProfil(id) {
   selectedGridProfileId = id;
@@ -76,36 +103,63 @@ async function selectGridProfil(id) {
     profile.active = profile.id === id;
   });
 
-  chrome.storage.sync.set({ selectedGridProfile: id }, () => {});
+  chrome.storage.local.set({ selectedGridProfile: id }, () => {});
   const selectedGrid = gridProfiles.filter((data) => data.id == id)[0];
 
+  if (selectedGrid) {
+    await chrome.tabs.sendMessage(tab.id, {
+      action: "updateSelectedProfileGrid",
+      gridProfile: selectedGrid,
+    });
+    gridWidth.value = Number(selectedGrid.width);
+    gridGap.value = Number(selectedGrid.gap);
+  } else {
+    await chrome.tabs.sendMessage(tab.id, {
+      action: "updateSelectedProfileGrid",
+      gridProfile: null,
+    });
+  }
+
+  updateGridProfilePopup();
+}
+
+async function updateGridProfileValues({ name, value }) {
+  gridProfiles.forEach((profile) => {
+    if (profile.id === selectedGridProfileId) {
+      profile[name] = value;
+    }
+  });
+
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   await chrome.tabs.sendMessage(tab.id, {
     action: "updateSelectedProfileGrid",
     gridProfile: selectedGrid,
   });
-  //   gridWidth.value = Number(selectedGrid.width);
-  //   gridGap.value = Number(selectedGrid.gap);
-  updateGridProfilePopup();
+
+  chrome.storage.local.set({ gridProfiles }, () => {
+    selectGridProfil(selectedGridProfileId);
+  });
 }
 
-// gridWidth.addEventListener("input", () => {
-//   gridProfiles.forEach((profile) => {
-//     if (profile.id === selectedGridProfileId) {
-//       profile.left = gridWidth.value;
-//     }
-//   });
+gridWidth.addEventListener("input", () => {
+  gridProfiles.forEach((profile) => {
+    if (profile.id === selectedGridProfileId) {
+      profile.left = gridWidth.value;
+    }
+  });
 
-//   chrome.storage.sync.set({ gridProfile });
-//   selectGridProfil(selectedGridProfileId);
-// });
+  chrome.storage.local.set({ gridProfile });
 
-// gridGap.addEventListener("input", () => {
-//   gridProfiles.forEach((profile) => {
-//     if (profile.id === selectedGridProfileId) {
-//       profile.top = gridGap.value;
-//     }
-//   });
+  selectGridProfil(selectedGridProfileId);
+});
 
-//   chrome.storage.sync.set({ gridProfile });
-//   selectGridProfil(selectedGridProfileId);
-// });
+gridGap.addEventListener("input", () => {
+  gridProfiles.forEach((profile) => {
+    if (profile.id === selectedGridProfileId) {
+      profile.top = gridGap.value;
+    }
+  });
+
+  chrome.storage.local.set({ gridProfile });
+  selectGridProfil(selectedGridProfileId);
+});

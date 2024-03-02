@@ -8,12 +8,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     const pixelInspectorGridOverlay = document.createElement("div");
     pixelInspectorGridOverlay.setAttribute("id", "pixelInspectorGridOverlay");
-    pixelInspectorGridOverlay.style.position = "absolute";
+    pixelInspectorGridOverlay.style.position = "fixed";
     pixelInspectorGridOverlay.style.left = "50%";
     pixelInspectorGridOverlay.style.top = "0px";
     pixelInspectorGridOverlay.style.transform = "translateX(-50%)";
     pixelInspectorGridOverlay.style.display = "flex";
     pixelInspectorGridOverlay.style.height = "100%";
+    pixelInspectorGridOverlay.style.zIndex = "2147483646";
 
     pixelInspectorParent.appendChild(pixelInspectorImageOverlay);
     pixelInspectorParent.appendChild(pixelInspectorGridOverlay);
@@ -30,50 +31,60 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === "updateSelectedProfileImages") {
-    const img = document.createElement("img");
-    img.src = message.imageProfile.imageSrc;
-    img.style.position = "absolute";
-    img.style.left = "calc(50% + " + message.imageProfile.left + "px)";
-    img.style.transform = "translate(-50%)";
-    img.style.top = message.imageProfile.top + "px";
-    img.alt = message.imageProfile.id;
-    img.id = message.imageProfile.id;
-
     const pixelInspectorImageOverlay = document.getElementById(
       "pixelInspectorImageOverlay"
     );
-
     if (pixelInspectorImageOverlay) {
       const existingImages = pixelInspectorImageOverlay.querySelectorAll("img");
       for (let i = 0; i < existingImages.length; i++) {
         existingImages[i].remove();
       }
-      pixelInspectorImageOverlay.appendChild(img);
+    }
+
+    if (message.imageProfile) {
+      const img = document.createElement("img");
+      img.src = message.imageProfile.imageSrc;
+      img.style.position = "absolute";
+      img.style.left = "calc(50% + " + message.imageProfile.left + "px)";
+      img.style.transform = "translate(-50%)";
+      img.style.top = message.imageProfile.top + "px";
+      img.style.opacity = message.imageProfile.isVisible
+        ? message.imageProfile.opacity
+        : 0;
+      img.alt = message.imageProfile.id;
+      img.id = message.imageProfile.id;
+
+      if (pixelInspectorImageOverlay) {
+        pixelInspectorImageOverlay.appendChild(img);
+      }
     }
   }
 
   if (message.action === "updateSelectedProfileGrid") {
-    const gridBar = document.createElement("div");
-    gridBar.style.background = message.gridProfile.color;
-    gridBar.style.height = "100%";
-    gridBar.style.flex = "1 1 100%";
-
     const pixelInspectorGridOverlay = document.getElementById(
       "pixelInspectorGridOverlay"
     );
-
     if (pixelInspectorGridOverlay) {
-      pixelInspectorGridOverlay.style.width = message.gridProfile.width + "px";
-      pixelInspectorGridOverlay.style.gap = message.gridProfile.gap + "px";
-      pixelInspectorGridOverlay.style.opacity = message.gridProfile.opacity;
-
       const existingGrids = pixelInspectorGridOverlay.querySelectorAll("div");
       for (let i = 0; i < existingGrids.length; i++) {
         existingGrids[i].remove();
       }
+    }
+    if (message.gridProfile) {
+      const gridBar = document.createElement("div");
+      gridBar.style.background = message.gridProfile.color;
+      gridBar.style.height = "100%";
+      gridBar.style.flex = "1 1 100%";
 
-      for (let i = 0; i < Number(message.gridProfile.amount); i++) {
-        pixelInspectorGridOverlay.appendChild(gridBar.cloneNode(true));
+      if (pixelInspectorGridOverlay) {
+        pixelInspectorGridOverlay.style.width =
+          message.gridProfile.width + "px";
+        pixelInspectorGridOverlay.style.gap = message.gridProfile.gap + "px";
+        pixelInspectorGridOverlay.style.opacity = message.gridProfile.opacity;
+
+        for (let i = 0; i < Number(message.gridProfile.amount); i++) {
+          pixelInspectorGridOverlay.appendChild(gridBar.cloneNode(true));
+        }
       }
     }
   }
