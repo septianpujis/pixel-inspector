@@ -4,6 +4,11 @@ const imageYPosition = document.getElementById("imageYPosition");
 const imageIsVisible = document.getElementById("imageIsVisible");
 const imageOpacity = document.getElementById("imageOpacity");
 
+const upArrow = document.getElementById("up-arrow");
+const downArrow = document.getElementById("down-arrow");
+const leftArrow = document.getElementById("left-arrow");
+const rightArrow = document.getElementById("right-arrow");
+
 var imageProfiles = [];
 var selectedImageProfileId = 0;
 
@@ -66,12 +71,14 @@ function deleteImageProfile(id) {
 }
 
 imageAddBtn.addEventListener("click", async () => {
+  //image upload goes here
+
   const newImage = {
-    id: Date.now(),
+    id: "image-" + Date.now(),
     imageSrc: `https://placehold.co/600x400/${getRandomColor()}/${getRandomColor()}?text=LOREM`,
     top: "0",
     left: "0",
-    opacity: 1,
+    opacity: 0.5,
     isVisible: true,
     active: true,
   };
@@ -96,7 +103,7 @@ async function selectImageProfil(id) {
   });
 
   const selectedImage = imageProfiles.filter((img) => img.id == id)[0];
-
+  showImageControlForm(id);
   if (selectedImage) {
     imageIsVisible.checked = selectedImage.isVisible;
     imageOpacity.value = selectedImage.opacity;
@@ -117,44 +124,89 @@ async function selectImageProfil(id) {
   updateImageProfilePopup();
 }
 
-function updateImageValuebyId(id) {
+function updateImageLocalStorage(id) {
   chrome.storage.local.set({ imageProfiles });
   selectImageProfil(id);
 }
 
-imageXPosition.addEventListener("input", () => {
-  console.log(imageXPosition.value);
+function updateImageStyle(id, style, value) {
   imageProfiles.forEach((profile) => {
-    if (profile.id === selectedImageProfileId) {
-      profile.left = imageXPosition.value;
+    if (profile.id === id) {
+      switch (style) {
+        case "isVisible":
+          profile.isVisible = value;
+          break;
+        case "left":
+          profile.left = value;
+          break;
+        case "top":
+          profile.top = value;
+          break;
+        case "opacity":
+          profile.opacity = value;
+          break;
+        default:
+          throw new Error("Invalid style parameter");
+      }
     }
   });
-  updateImageValuebyId(selectedImageProfileId);
-});
+}
 
+imageXPosition.addEventListener("input", () => {
+  const leftValue = imageXPosition.value?.trim() || 0;
+
+  updateImageStyle(selectedImageProfileId, "left", leftValue);
+  updateImageLocalStorage(selectedImageProfileId);
+});
 imageYPosition.addEventListener("input", () => {
-  imageProfiles.forEach((profile) => {
-    if (profile.id === selectedImageProfileId) {
-      profile.top = imageYPosition.value;
-    }
-  });
-  updateImageValuebyId(selectedImageProfileId);
+  const topValue = imageYPosition.value?.trim() || 0;
+
+  updateImageStyle(selectedImageProfileId, "top", topValue);
+  updateImageLocalStorage(selectedImageProfileId);
 });
 
 imageIsVisible.addEventListener("change", () => {
-  imageProfiles.forEach((profile) => {
-    if (profile.id === selectedImageProfileId) {
-      profile.isVisible = imageIsVisible.checked;
-    }
-  });
-  updateImageValuebyId(selectedImageProfileId);
+  updateImageStyle(selectedImageProfileId, "isVisible", imageIsVisible.checked);
+  updateImageLocalStorage(selectedImageProfileId);
 });
 
 imageOpacity.addEventListener("input", () => {
-  imageProfiles.forEach((profile) => {
-    if (profile.id === selectedImageProfileId) {
-      profile.opacity = imageOpacity.value;
-    }
-  });
-  updateImageValuebyId(selectedImageProfileId);
+  updateImageStyle(selectedImageProfileId, "opacity", imageOpacity.value);
+  updateImageLocalStorage(selectedImageProfileId);
+});
+
+leftArrow.addEventListener("click", () => {
+  updateImageStyle(
+    selectedImageProfileId,
+    "left",
+    Number(imageXPosition.value) - 10
+  );
+  updateImageLocalStorage(selectedImageProfileId);
+});
+
+rightArrow.addEventListener("click", () => {
+  updateImageStyle(
+    selectedImageProfileId,
+    "left",
+    Number(imageXPosition.value) + 10
+  );
+  updateImageLocalStorage(selectedImageProfileId);
+});
+
+upArrow.addEventListener("click", () => {
+  updateImageStyle(
+    selectedImageProfileId,
+    "top",
+    Number(imageYPosition.value) - 10
+  );
+  updateImageLocalStorage(selectedImageProfileId);
+});
+
+downArrow.addEventListener("click", () => {
+  updateImageStyle(
+    selectedImageProfileId,
+    "top",
+    Number(imageYPosition.value) + 10
+  );
+  updateImageLocalStorage(selectedImageProfileId);
 });

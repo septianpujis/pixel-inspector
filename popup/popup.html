@@ -20,10 +20,11 @@
       <div class="pi-tab-wrapper">
         <div id="tab-image" class="pi-tab-content">
           <div class="pi-profile-wrapper">
-            <button class="pi-add-profile" id="imageAddBtn">+ Upload</button>
+            <!-- <input type="file" class="pi-add-profile" id="imageAddBtn" /> -->
+            <button class="pi-add-profile" id="imageAddBtn">+</button>
           </div>
 
-          <div class="pi-form-wrapper">
+          <div class="pi-form-wrapper" id="imageControlForm">
             <div
               id="game-container"
               style="position: relative; width: 120px; height: 120px"
@@ -95,7 +96,7 @@
             <button class="pi-add-profile" id="gridAddBtn">Add new grid</button>
           </div>
 
-          <div class="pi-form-wrapper">
+          <div class="pi-form-wrapper" id="gridControlForm">
             <div class="pi-grid-config-wrapper">
               <label>Width: <input type="number" id="gridWidth" /></label>
               <label>Column: <input type="number" id="gridAmount" /></label>
@@ -123,5 +124,6 @@
     <script src="imageConfig.js"></script>
     <script src="gridConfig.js"></script>
     <script src="inputDrag.js"></script>
+    <script src="mobileController.js"></script>
   </body>
 </html>

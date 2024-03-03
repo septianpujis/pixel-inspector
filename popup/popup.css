@@ -140,6 +140,7 @@ input[type="range"]:focus {
   cursor: pointer;
   background-color: white;
   font-size: 16px;
+  border-bottom: 2px solid var(--object-bg);
 }
 .pi-tab-switch.active {
   border-bottom: 2px solid blue;
@@ -152,7 +153,7 @@ input[type="range"]:focus {
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
-  border: 2px solid var(--object-primary);
+  border: 2px solid var(--object-bg);
   border-radius: 4px;
   padding: 8px;
 }
@@ -241,7 +242,7 @@ input[type="range"]:focus {
   gap: 8px;
   margin-bottom: 16px;
   max-height: 100px;
-  border: 2px solid var(--object-primary);
+  border: 2px solid var(--object-bg);
   border-radius: 4px;
   padding: 8px;
 }
@@ -261,11 +262,15 @@ input[type="range"]:focus {
   border-color: blue;
 }
 
+#tab-grid .pi-grid-profile .info {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex: 1 1;
+  height: 24px;
+}
 #tab-grid .pi-grid-profile .close-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0;
   width: 24px;
   height: 24px;
   display: none;
@@ -362,13 +367,13 @@ input[type="range"]:focus {
   transform: translateX(-50%) rotate(-90deg);
 }
 
-#left-arrow {
+#right-arrow {
   right: 0;
   top: 50%;
   transform: translateY(-50%) rotate(-180deg);
 }
 
-#right-arrow {
+#left-arrow {
   left: 0;
   top: 50%;
   transform: translateY(-50%);

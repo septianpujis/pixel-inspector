@@ -47,7 +47,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       img.style.position = "absolute";
       img.style.left = "calc(50% + " + message.imageProfile.left + "px)";
       img.style.transform = "translate(-50%)";
-      img.style.top = message.imageProfile.top + "px";
+      img.style.pointerEvents = "none";
+
+      if (message.imageProfile.top === null) {
+        img.style.top = "0px";
+      } else {
+        img.style.top = `${message.imageProfile.top}px`;
+      }
+
       img.style.opacity = message.imageProfile.isVisible
         ? message.imageProfile.opacity
         : 0;

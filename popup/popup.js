@@ -111,3 +111,20 @@ async function sendMessage(object) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   await chrome.tabs.sendMessage(tab.id, object);
 }
+
+function showImageControlForm(id) {
+  if (id) {
+    document.querySelector("#imageControlForm").style.display = "flex";
+  }
+  if (!id) {
+    document.querySelector("#imageControlForm").style.display = "none";
+  }
+}
+function showGridControlForm(id) {
+  if (id) {
+    document.querySelector("#gridControlForm").style.display = "flex";
+  }
+  if (!id) {
+    document.querySelector("#gridControlForm").style.display = "none";
+  }
+}
