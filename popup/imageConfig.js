@@ -12,14 +12,15 @@ const rightArrow = document.getElementById("right-arrow");
 var imageProfiles = [];
 var selectedImageProfileId = 0;
 
-chrome.storage.local.get("selectedImageProfile", (data) => {
-  selectedImageProfileId = data.selectedImageProfile || 0;
-  selectImageProfil(selectedImageProfileId);
-});
-
 chrome.storage.local.get("imageProfiles", (data) => {
   imageProfiles = data.imageProfiles || [];
   updateImageProfilePopup();
+});
+
+chrome.storage.local.get("selectedImageProfile", (data) => {
+  selectedImageProfileId = data.selectedImageProfile || 0;
+  console.log(`current id ${selectedImageProfileId}`);
+  selectImageProfil(selectedImageProfileId);
 });
 
 function updateImageProfilePopup() {
@@ -69,13 +70,14 @@ function deleteImageProfile(id) {
   updateImageProfilePopup();
   selectImageProfil(null);
 }
+imageAddBtn.addEventListener("click", () => {
+  createNewImageProfile();
+});
 
-imageAddBtn.addEventListener("click", async () => {
-  //image upload goes here
-
+function createNewImageProfile() {
   const newImage = {
     id: "image-" + Date.now(),
-    imageSrc: `https://placehold.co/600x400/${getRandomColor()}/${getRandomColor()}?text=LOREM`,
+    imageSrc: `https://placehold.co/600x400/${getRandomColor()}/${getRandomColor()}?text=Refresh`,
     top: "0",
     left: "0",
     opacity: 0.5,
@@ -89,22 +91,31 @@ imageAddBtn.addEventListener("click", async () => {
 
   imageProfiles.push(newImage);
   chrome.storage.local.set({ imageProfiles: imageProfiles }, () => {});
+
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      message: "chooseFile",
+      profileId: newImage.id,
+    });
+  });
+
   selectImageProfil(newImage.id);
-});
+}
 
 async function selectImageProfil(id) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  selectedImageProfileId = id;
-  chrome.storage.local.set({ selectedImageProfile: id }, () => {});
-
-  imageProfiles.forEach((profile) => {
-    profile.active = profile.id === selectedImageProfileId;
-  });
+  if (selectedImageProfileId !== id) {
+    selectedImageProfileId = id;
+    chrome.storage.local.set({ selectedImageProfile: id }, () => {});
+  }
 
   const selectedImage = imageProfiles.filter((img) => img.id == id)[0];
-  showImageControlForm(id);
+
   if (selectedImage) {
+    imageProfiles.forEach((profile) => {
+      profile.active = profile.id === selectedImageProfileId;
+    });
+
     imageIsVisible.checked = selectedImage.isVisible;
     imageOpacity.value = selectedImage.opacity;
     imageXPosition.value = Number(selectedImage.left);
@@ -121,6 +132,7 @@ async function selectImageProfil(id) {
     });
   }
 
+  showImageControlForm(id);
   updateImageProfilePopup();
 }
 

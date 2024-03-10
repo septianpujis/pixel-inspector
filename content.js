@@ -1,4 +1,47 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.message == "chooseFile") {
+    console.log(`hit chooseFile`);
+    var fileChooser = document.createElement("input");
+    fileChooser.type = "file";
+    fileChooser.accept = "image/*";
+
+    fileChooser.addEventListener("change", function () {
+      var file = fileChooser.files[0];
+
+      if (!file.type.startsWith("image/")) {
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        chrome.storage.local.get("imageProfiles", function (result) {
+          const imageProfiles = result.imageProfiles || [];
+
+          const selectedProfile = imageProfiles.filter(
+            (profile) => profile.id === message.profileId
+          );
+
+          if (selectedProfile) {
+            selectedProfile[0].imageSrc = reader.result;
+            chrome.storage.local.set(
+              { imageProfiles: imageProfiles },
+              () => {}
+            );
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+
+      form.reset();
+    });
+
+    /* Wrap it in a form for resetting */
+    var form = document.createElement("form");
+    form.appendChild(fileChooser);
+
+    fileChooser.click();
+  }
+
   if (message.action === "toogleExtension") {
     const pixelInspectorParent = document.createElement("div");
     pixelInspectorParent.setAttribute("id", "pixelInspectorParent");
@@ -11,10 +54,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     pixelInspectorGridOverlay.style.position = "fixed";
     pixelInspectorGridOverlay.style.left = "50%";
     pixelInspectorGridOverlay.style.top = "0px";
-    pixelInspectorGridOverlay.style.transform = "translateX(-50%)";
     pixelInspectorGridOverlay.style.display = "flex";
     pixelInspectorGridOverlay.style.height = "100%";
     pixelInspectorGridOverlay.style.zIndex = "2147483646";
+    pixelInspectorGridOverlay.style.transform = "translateX(-50%)";
 
     pixelInspectorParent.appendChild(pixelInspectorImageOverlay);
     pixelInspectorParent.appendChild(pixelInspectorGridOverlay);
@@ -44,10 +87,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.imageProfile) {
       const img = document.createElement("img");
       img.src = message.imageProfile.imageSrc;
+
+      img.style.pointerEvents = "none";
       img.style.position = "absolute";
       img.style.left = "calc(50% + " + message.imageProfile.left + "px)";
-      img.style.transform = "translate(-50%)";
-      img.style.pointerEvents = "none";
+      img.style.transform = `translate(-50%) scale(${
+        (message.imageProfile.scale, 1)
+      })`;
 
       if (message.imageProfile.top === null) {
         img.style.top = "0px";

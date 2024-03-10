@@ -113,18 +113,10 @@ async function sendMessage(object) {
 }
 
 function showImageControlForm(id) {
-  if (id) {
-    document.querySelector("#imageControlForm").style.display = "flex";
-  }
-  if (!id) {
-    document.querySelector("#imageControlForm").style.display = "none";
-  }
+  const imageControlForm = document.querySelector("#imageControlForm");
+  imageControlForm.style.display = id ? "flex" : "none";
 }
 function showGridControlForm(id) {
-  if (id) {
-    document.querySelector("#gridControlForm").style.display = "flex";
-  }
-  if (!id) {
-    document.querySelector("#gridControlForm").style.display = "none";
-  }
+  const gridControlForm = document.querySelector("#gridControlForm");
+  gridControlForm.style.display = id ? "flex" : "none";
 }
