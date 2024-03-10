@@ -118,6 +118,9 @@ input[type="range"]:focus {
   height: 40px;
   border-radius: 50%;
   background-color: blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pi-power-button:hover {
@@ -175,6 +178,9 @@ input[type="range"]:focus {
   border: 2px dashed blue;
   cursor: pointer;
   position: relative;
+  background-color: var(--object-bg);
+  display: flex;
+  align-items: center;
 }
 
 #tab-image .pi-image-profile.active {
@@ -182,6 +188,7 @@ input[type="range"]:focus {
 }
 
 #tab-image .pi-image-profile .close-icon {
+  background: url("../images/trash-can-solid.svg");
   position: absolute;
   top: -12px;
   right: -12px;
@@ -194,6 +201,9 @@ input[type="range"]:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 15px;
 }
 
 #tab-image .pi-image-profile img {
@@ -275,6 +285,10 @@ input[type="range"]:focus {
   height: 24px;
   display: none;
   font-size: 24px;
+  background: url("../images/trash-can-solid.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 15px;
 }
 #tab-grid .pi-grid-profile:hover .close-icon {
   display: flex;

@@ -36,7 +36,6 @@ function updateGridProfilePopup() {
     // Added close icon
     const closeIcon = document.createElement("div");
     closeIcon.classList.add("close-icon");
-    closeIcon.innerHTML = "&times;";
 
     // Added click handler to delete profile
     closeIcon.addEventListener("click", function () {

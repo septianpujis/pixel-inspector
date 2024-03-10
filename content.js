@@ -1,6 +1,5 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.message == "chooseFile") {
-    console.log(`hit chooseFile`);
     var fileChooser = document.createElement("input");
     fileChooser.type = "file";
     fileChooser.accept = "image/*";
@@ -56,7 +55,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     pixelInspectorGridOverlay.style.top = "0px";
     pixelInspectorGridOverlay.style.display = "flex";
     pixelInspectorGridOverlay.style.height = "100%";
-    pixelInspectorGridOverlay.style.zIndex = "2147483646";
+    pixelInspectorGridOverlay.style.zIndex = "214748364";
     pixelInspectorGridOverlay.style.transform = "translateX(-50%)";
 
     pixelInspectorParent.appendChild(pixelInspectorImageOverlay);
@@ -89,6 +88,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       img.src = message.imageProfile.imageSrc;
 
       img.style.pointerEvents = "none";
+      img.style.zIndex = "214748364";
       img.style.position = "absolute";
       img.style.left = "calc(50% + " + message.imageProfile.left + "px)";
       img.style.transform = `translate(-50%) scale(${

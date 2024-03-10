@@ -19,7 +19,6 @@ chrome.storage.local.get("imageProfiles", (data) => {
 
 chrome.storage.local.get("selectedImageProfile", (data) => {
   selectedImageProfileId = data.selectedImageProfile || 0;
-  console.log(`current id ${selectedImageProfileId}`);
   selectImageProfil(selectedImageProfileId);
 });
 
@@ -40,7 +39,6 @@ function updateImageProfilePopup() {
     // Added close icon
     const closeIcon = document.createElement("div");
     closeIcon.classList.add("close-icon");
-    closeIcon.innerHTML = "&times;";
 
     // Added click handler to delete profile
     closeIcon.addEventListener("click", function () {
@@ -70,6 +68,7 @@ function deleteImageProfile(id) {
   updateImageProfilePopup();
   selectImageProfil(null);
 }
+
 imageAddBtn.addEventListener("click", () => {
   createNewImageProfile();
 });
@@ -90,7 +89,7 @@ function createNewImageProfile() {
   });
 
   imageProfiles.push(newImage);
-  chrome.storage.local.set({ imageProfiles: imageProfiles }, () => {});
+  chrome.storage.local.set({ imageProfiles: imageProfiles });
 
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {
@@ -104,10 +103,10 @@ function createNewImageProfile() {
 
 async function selectImageProfil(id) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (selectedImageProfileId !== id) {
-    selectedImageProfileId = id;
-    chrome.storage.local.set({ selectedImageProfile: id }, () => {});
-  }
+  // if (selectedImageProfileId !== id) {
+  selectedImageProfileId = id;
+  chrome.storage.local.set({ selectedImageProfile: id });
+  // }
 
   const selectedImage = imageProfiles.filter((img) => img.id == id)[0];
 

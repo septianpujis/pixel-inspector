@@ -21,7 +21,7 @@ const tabContents = document.querySelectorAll(".pi-tab-content");
 
 chrome.storage.local.get("enabled", async (data) => {
   isExtensionEnabled = data.enabled || false; // Default to disabled if no data exists
-  extMainButton.textContent = isExtensionEnabled ? "On" : "Off";
+  // extMainButton.textContent = isExtensionEnabled ? "On" : "Off";
   document.querySelector(`.pi-body`).style.display = isExtensionEnabled
     ? "block"
     : "none";
@@ -45,7 +45,7 @@ chrome.storage.local.get("enabled", async (data) => {
 
 extMainButton.addEventListener("click", async () => {
   isExtensionEnabled = !isExtensionEnabled;
-  extMainButton.textContent = isExtensionEnabled ? "On" : "Off";
+  // extMainButton.textContent = isExtensionEnabled ? "On" : "Off";
   document.querySelector(`.pi-body`).style.display = isExtensionEnabled
     ? "block"
     : "none";
